@@ -314,16 +314,6 @@ h2 {
   text-align: center;
 }
 
-.completed-toggle {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  cursor: pointer;
-  font-size: 12px;
-  padding: 0;
-  text-decoration: underline;
-}
-
 /* ---------- calendar view ---------- */
 
 .calendar-header {

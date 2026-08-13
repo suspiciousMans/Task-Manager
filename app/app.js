@@ -2,7 +2,6 @@
   "use strict";
 
   const STORAGE_KEY = "taskmanager.tasks.v1";
-  const CAL_STATE_KEY = "taskmanager.calState.v1";
 
   /** @typedef {{id:string,title:string,notes:string,category:string,priority:'low'|'medium'|'high',dueDate:string,dueTime:string,completed:boolean,createdAt:string}} Task */
 
@@ -30,7 +29,6 @@
 
   let tasks = loadTasks();
   let view = "list";
-  let showCompleted = false;
   let calDate = new Date();
   let selectedDay = null;
 
@@ -306,32 +304,13 @@
     html += taskGroupHtml("Upcoming", upcoming);
     html += taskGroupHtml("No due date", noDate);
 
-    if (!overdue.length && !today.length && !upcoming.length && !noDate.length) {
+    html += taskGroupHtml("Completed", completedList);
+
+    if (!overdue.length && !today.length && !upcoming.length && !noDate.length && !completedList.length) {
       html += `<div class="empty-state">Nothing here. Add a task to get started.</div>`;
     }
 
-    if (completedList.length) {
-      html += `
-        <div class="task-group">
-          <div class="task-group-title">
-            <button type="button" class="completed-toggle" id="toggle-completed">
-              ${showCompleted ? "Hide" : "Show"} completed (${completedList.length})
-            </button>
-          </div>
-          ${showCompleted ? `<ul class="task-list">${completedList.map(taskItemHtml).join("")}</ul>` : ""}
-        </div>
-      `;
-    }
-
     els.listView.innerHTML = html;
-
-    const toggle = document.getElementById("toggle-completed");
-    if (toggle) {
-      toggle.addEventListener("click", () => {
-        showCompleted = !showCompleted;
-        renderListView();
-      });
-    }
   }
 
   // ---------- rendering: calendar view ----------
